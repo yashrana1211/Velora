@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Manager | VELORA</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F8F7F4;
+            color: #171717;
+            font-family: 'Inter', sans-serif;
+        }
+
+        header {
+            background: #171717;
+            color: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 29px;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            color: #B49A7A;
+            font-size: 10px;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 22px;
+        }
+
+        .heading {
+            margin-bottom: 35px;
+        }
+
+        .heading h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 500;
+        }
+
+        .heading p {
+            color: #777;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #EDE8E0;
+            padding: 32px;
+            margin-bottom: 35px;
+        }
+
+        .panel h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            font-size: 26px;
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #E5E0D8;
+            background: #FAF9F7;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #B49A7A;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .upload-box {
+            border: 1px dashed #B49A7A;
+            background: #FAF9F7;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .upload-box input {
+            background: transparent;
+            border: none;
+            padding: 10px;
+        }
+
+        .upload-box p {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        #imagePreview {
+            display: none;
+            width: 140px;
+            height: 150px;
+            object-fit: cover;
+            margin: 20px auto 0;
+            border: 1px solid #EDE8E0;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .primary-btn {
+            background: #171717;
+            color: white;
+            padding: 15px 25px;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+        .primary-btn:hover {
+            background: #B49A7A;
+        }
+
+        .secondary-btn {
+            background: #EDE8E0;
+            color: #171717;
+            padding: 15px 25px;
+            font-size: 12px;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .products-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .products-heading h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 27px;
+            font-weight: 500;
+        }
+
+        #productList {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #EDE8E0;
+            background: white;
+            padding: 15px;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            background: #EDE8E0;
+        }
+
+        .product-card h3 {
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        .product-card p {
+            color: #777;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .product-price {
+            color: #171717 !important;
+            font-size: 15px !important;
+            font-weight: 600;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .edit-btn, .delete-btn, .toggle-btn {
+            padding: 10px;
+            font-size: 11px;
+            flex: 1;
+        }
+
+        .edit-btn {
+            background: #EDE8E0;
+        }
+
+        .delete-btn {
+            background: #F5E4E1;
+            color: #A33A2B;
+        }
+
+        .toggle-btn {
+            background: #171717;
+            color: white;
+        }
+
+        .inactive {
+            opacity: 0.55;
+        }
+
+        .empty {
+            color: #777;
+            padding: 30px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 12px;
+            border-top: 1px solid #EDE8E0;
+            margin-top: 70px;
+        }
+
+        @media(max-width: 800px) {
+            #productList {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 550px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            #productList {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .heading h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="logo">VELORA</div>
+        <div class="subtitle">PRODUCT MANAGEMENT</div>
+    </div>
+
+    <a href="admin.html">← ADMIN DASHBOARD</a>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <h1>Product Manager</h1>
+        <p>Manage your collections, prices and product photography.</p>
+    </section>
+
+    <section class="panel">
+
+        <h2 id="formTitle">Add New Product</h2>
+
+        <form id="productForm">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="productName">Product Name</label>
+                    <input id="productName" type="text" required
+                           placeholder="e.g. Premium Cotton Shirt">
+                </div>
+
+                <div class="field">
+                    <label for="productId">Product ID</label>
+                    <input id="productId" type="text" required
+                           placeholder="e.g. premium-shirt">
+                </div>
+
+                <div class="field">
+                    <label for="productPrice">Price (₹)</label>
+                    <input id="productPrice" type="number"
+                           min="0" step="0.01" required>
+                </div>
+
+                <div class="field">
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory" required>
+                        <option value="">Select category</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="New Arrivals">New Arrivals</option>
+                        <option value="Accessories">Accessories</option>
+                    </select>
+                </div>
+
+                <div class="field full">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription"
+                              placeholder="Describe your product..."></textarea>
+                </div>
+
+                <div class="field full">
+                    <label>Product Photograph</label>
+
+                    <div class="upload-box">
+                        <p>Choose a photograph from your computer.</p>
+
+                        <input
+                            type="file"
+                            id="productImage"
+                            accept="image/jpeg,image/png,image/webp"
+                        >
+
+                        <img id="imagePreview" alt="Product preview">
+                    </div>
+
+                    <small style="color:#777;font-size:11px;">
+                        Maximum file size: 5 MB. JPG, PNG or WEBP.
+                    </small>
+                </div>
+
+                <div class="field full">
+                    <label>
+                        <input type="checkbox" id="productActive"
+                               checked style="width:auto;">
+                        Make product visible in the store
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="button-row">
+
+                <button type="submit" class="primary-btn" id="saveButton">
+                    SAVE PRODUCT
+                </button>
+
+                <button type="button" class="secondary-btn"
+                        id="cancelButton" style="display:none;">
+                    CANCEL EDIT
+                </button>
+
+            </div>
+
+            <p id="message" role="status" aria-live="polite"></p>
+
+        </form>
+
+    </section>
+
+    <section>
+
+        <div class="products-heading">
+            <h2>Your Products</h2>
+
+            <button class="primary-btn" id="refreshButton">
+                REFRESH
+            </button>
+        </div>
+
+        <div id="productList">
+            <p class="empty">Loading products...</p>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 VELORA. Define Your Style. Own Your Identity.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+
+<script>
+
+const form = document.getElementById("productForm");
+const message = document.getElementById("message");
+const productList = document.getElementById("productList");
+const imageInput = document.getElementById("productImage");
+const imagePreview = document.getElementById("imagePreview");
+
+let editingId = null;
+let existingImageUrl = "";
+let previewUrl = null;
+
+function showMessage(text, success = false) {
+    message.textContent = text;
+    message.style.color = success ? "#287A45" : "#B33A2B";
+}
+
+function formatMoney(value) {
+    return "₹" + Number(value).toLocaleString("en-IN");
+}
+
+// Verify administrator
+async function verifyAdmin() {
+
+    const { data: { user }, error: authError } =
+        await supabaseClient.auth.getUser();
+
+    if (authError || !user) {
+        window.location.href = "login.html";
+        return false;
+    }
+
+    const { data, error } =
+        await supabaseClient.rpc("is_admin");
+
+    if (error || data !== true) {
+        alert("Administrator access required.");
+        window.location.href = "account.html";
+        return false;
+    }
+
+    return true;
+}
+
+// Image preview
+imageInput.addEventListener("change", function() {
+
+    const file = imageInput.files[0];
+
+    if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+    }
+
+    if (!file) {
+        imagePreview.style.display = "none";
+        return;
+    }
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+        alert("Please choose a JPG, PNG or WEBP image.");
+        imageInput.value = "";
+        imagePreview.style.display = "none";
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        alert("Image must be smaller than 5 MB.");
+        imageInput.value = "";
+        imagePreview.style.display = "none";
+        return;
+    }
+
+    previewUrl = URL.createObjectURL(file);
+    imagePreview.src = previewUrl;
+    imagePreview.style.display = "block";
+
+});
+
+// Upload image to Supabase Storage
+async function uploadImage(file) {
+
+    if (!file) return existingImageUrl;
+
+    const extension = file.name.split(".").pop().toLowerCase();
+
+    const filePath =
+        "products/" +
+        Date.now() + "-" +
+        crypto.randomUUID() + "." +
+        extension;
+
+    const { error } = await supabaseClient.storage
+        .from("product-images")
+        .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false
+        });
+
+    if (error) throw error;
+
+    const { data } = supabaseClient.storage
+        .from("product-images")
+        .getPublicUrl(filePath);
+
+    return data.publicUrl;
+}
+
+// Load product catalogue
+async function loadProducts() {
+
+    productList.innerHTML =
+        '<p class="empty">Loading products...</p>';
+
+    const { data, error } = await supabaseClient
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    productList.innerHTML = "";
+
+    if (!data || data.length === 0) {
+        productList.innerHTML =
+            '<p class="empty">No products found.</p>';
+        return;
+    }
+
+    data.forEach(product => {
+
+        const card = document.createElement("article");
+        card.className = "product-card";
+
+        if (!product.is_active) {
+            card.classList.add("inactive");
+        }
+
+        const image = document.createElement("img");
+        image.src = product.image_url || "";
+        image.alt = product.name;
+        image.loading = "lazy";
+
+        image.onerror = () => {
+            image.style.visibility = "hidden";
+        };
+
+        const name = document.createElement("h3");
+        name.textContent = product.name;
+
+        const category = document.createElement("p");
+        category.textContent = product.category;
+
+        const price = document.createElement("p");
+        price.className = "product-price";
+        price.textContent = formatMoney(product.price);
+
+        const visibility = document.createElement("p");
+        visibility.textContent =
+            product.is_active ? "Active" : "Hidden";
+
+        const actions = document.createElement("div");
+        actions.className = "product-actions";
+
+        const editButton = document.createElement("button");
+        editButton.className = "edit-btn";
+        editButton.textContent = "EDIT";
+
+        editButton.addEventListener("click", () => {
+            editProduct(product);
+        });
+
+        const toggleButton = document.createElement("button");
+        toggleButton.className = "toggle-btn";
+        toggleButton.textContent =
+            product.is_active ? "HIDE" : "ACTIVATE";
+
+        toggleButton.addEventListener("click", () => {
+            toggleProduct(product);
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "DELETE";
+
+        deleteButton.addEventListener("click", () => {
+            deleteProduct(product);
+        });
+
+        actions.append(editButton, toggleButton, deleteButton);
+
+        card.append(
+            image,
+            name,
+            category,
+            price,
+            visibility,
+            actions
+        );
+
+        productList.appendChild(card);
+
+    });
+
+}
+
+// Edit existing product
+function editProduct(product) {
+
+    editingId = product.id;
+    existingImageUrl = product.image_url || "";
+
+    document.getElementById("productName").value = product.name;
+    document.getElementById("productId").value = product.id;
+    document.getElementById("productId").disabled = true;
+
+    document.getElementById("productPrice").value = product.price;
+    document.getElementById("productCategory").value = product.category;
+
+    document.getElementById("productDescription").value =
+        product.description || "";
+
+    document.getElementById("productActive").checked =
+        product.is_active !== false;
+
+    imageInput.value = "";
+
+    if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+    }
+
+    if (existingImageUrl) {
+        imagePreview.src = existingImageUrl;
+        imagePreview.style.display = "block";
+    } else {
+        imagePreview.style.display = "none";
+    }
+
+    document.getElementById("formTitle").textContent =
+        "Edit Product";
+
+    document.getElementById("saveButton").textContent =
+        "UPDATE PRODUCT";
+
+    document.getElementById("cancelButton").style.display =
+        "inline-block";
+
+    showMessage("Editing: " + product.name, true);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+}
+
+// Reset form
+function resetForm() {
+
+    form.reset();
+
+    editingId = null;
+    existingImageUrl = "";
+
+    document.getElementById("productId").disabled = false;
+
+    document.getElementById("formTitle").textContent =
+        "Add New Product";
+
+    document.getElementById("saveButton").textContent =
+        "SAVE PRODUCT";
+
+    document.getElementById("cancelButton").style.display =
+        "none";
+
+    if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+    }
+
+    imagePreview.style.display = "none";
+    imageInput.value = "";
+
+    showMessage("");
+
+}
+
+document.getElementById("cancelButton").addEventListener(
+    "click",
+    resetForm
+);
+
+// Save or update product
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const saveButton = document.getElementById("saveButton");
+
+    saveButton.disabled = true;
+    saveButton.textContent = "SAVING...";
+
+    try {
+
+        const name =
+            document.getElementById("productName").value.trim();
+
+        const id =
+            document.getElementById("productId").value.trim();
+
+        const price =
+            Number(document.getElementById("productPrice").value);
+
+        const category =
+            document.getElementById("productCategory").value;
+
+        const description =
+            document.getElementById("productDescription").value.trim();
+
+        const isActive =
+            document.getElementById("productActive").checked;
+
+        const file = imageInput.files[0];
+
+        if (!name || !id || !category ||
+            !Number.isFinite(price) || price < 0) {
+            throw new Error("Please enter valid product details.");
+        }
+
+        if (!editingId && !/^[a-z0-9-]+$/.test(id)) {
+            throw new Error(
+                "Product ID must use lowercase letters, numbers and hyphens."
+            );
+        }
+
+        if (file) {
+
+            if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+                throw new Error("Choose a JPG, PNG or WEBP image.");
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                throw new Error("Image must be smaller than 5 MB.");
+            }
+
+        }
+
+        const imageUrl = await uploadImage(file);
+
+        const productData = {
+            id: editingId || id,
+            name: name,
+            price: price,
+            category: category,
+            description: description,
+            image_url: imageUrl || null,
+            is_active: isActive
+        };
+
+        let result;
+
+        if (editingId) {
+
+            result = await supabaseClient
+                .from("products")
+                .update(productData)
+                .eq("id", editingId);
+
+        } else {
+
+            result = await supabaseClient
+                .from("products")
+                .insert(productData);
+
+        }
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        showMessage(
+            editingId
+                ? "Product updated successfully!"
+                : "New product added successfully!",
+            true
+        );
+
+        resetForm();
+
+        await loadProducts();
+
+    } catch (error) {
+
+        console.error(error);
+        showMessage(error.message);
+
+    } finally {
+
+        saveButton.disabled = false;
+
+        if (editingId) {
+            saveButton.textContent = "UPDATE PRODUCT";
+        } else {
+            saveButton.textContent = "SAVE PRODUCT";
+        }
+
+    }
+
+});
+
+// Activate or deactivate product
+async function toggleProduct(product) {
+
+    const newStatus = !product.is_active;
+
+    const confirmed = confirm(
+        newStatus
+            ? "Make this product visible in the store?"
+            : "Hide this product from the store?"
+    );
+
+    if (!confirmed) return;
+
+    const { error } = await supabaseClient
+        .from("products")
+        .update({ is_active: newStatus })
+        .eq("id", product.id);
+
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    await loadProducts();
+
+}
+
+// Delete product
+async function deleteProduct(product) {
+
+    const confirmed = confirm(
+        "Permanently delete " + product.name + "?"
+    );
+
+    if (!confirmed) return;
+
+    const { error } = await supabaseClient
+        .from("products")
+        .delete()
+        .eq("id", product.id);
+
+    if (error) {
+        alert("Unable to delete product: " + error.message);
+        return;
+    }
+
+    alert("Product deleted successfully.");
+
+    await loadProducts();
+
+}
+
+// Refresh product list
+document.getElementById("refreshButton").addEventListener(
+    "click",
+    async () => {
+        try {
+            await loadProducts();
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+);
+
+// Start page
+async function initialize() {
+
+    try {
+
+        const allowed = await verifyAdmin();
+
+        if (!allowed) return;
+
+        await loadProducts();
+
+    } catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+            "Unable to load Product Manager: " + error.message;
+
+    }
+
+}
+
+initialize();
+
+</script>
+
+</body>
+</html>

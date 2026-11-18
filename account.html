@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | VELORA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F8F7F4;
+            color: #171717;
+            font-family: 'Inter', sans-serif;
+        }
+
+        header {
+            background: white;
+            padding: 22px 8%;
+            border-bottom: 1px solid #EDE8E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            letter-spacing: 4px;
+            font-weight: 700;
+        }
+
+        header a {
+            color: #171717;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .heading h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .heading p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .account-card {
+            background: white;
+            padding: 40px;
+            border: 1px solid #EDE8E0;
+        }
+
+        .profile-icon {
+            width: 75px;
+            height: 75px;
+            background: #EDE8E0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .info {
+            margin-bottom: 25px;
+        }
+
+        .info label {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info p {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #EDE8E0;
+            margin: 30px 0;
+        }
+
+        .logout-btn {
+            background: #171717;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #B49A7A;
+        }
+
+        #message {
+            color: #777;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 12px;
+            border-top: 1px solid #EDE8E0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 40px auto;
+            }
+
+            .heading h1 {
+                font-size: 34px;
+            }
+
+            .account-card {
+                padding: 25px;
+            }
+        }
+        .orders-btn {
+    display: inline-block;
+    background: #B49A7A;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.orders-btn:hover {
+    background: #171717;
+}
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">VELORA</div>
+        <a href="index.html">← Back to Shopping</a>
+    </header>
+
+    <main class="container">
+
+        <div class="heading">
+            <h1>My Account</h1>
+            <p>Welcome to your personal VELORA space.</p>
+        </div>
+
+        <section class="account-card">
+
+            <div class="profile-icon" id="profileInitial">V</div>
+
+            <div class="info">
+                <label>Full Name</label>
+                <p id="customerName">Loading...</p>
+            </div>
+
+            <div class="info">
+                <label>Email Address</label>
+                <p id="customerEmail">Loading...</p>
+            </div>
+
+           <hr class="divider">
+
+            <a href="my-orders.html" class="orders-btn">
+             VIEW MY ORDERS →
+            </a>
+
+            <br><br>
+
+            <button class="logout-btn" id="logoutBtn">
+            Logout
+            </button>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 VELORA. Define Your Style. Own Your Identity.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+
+    <script>
+        async function loadAccount() {
+
+            const { data, error } =
+                await supabaseClient.auth.getUser();
+
+            if (error || !data.user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const user = data.user;
+
+            const name =
+                user.user_metadata?.full_name || "VELORA Customer";
+
+            document.getElementById("customerName").textContent = name;
+            document.getElementById("customerEmail").textContent = user.email;
+
+            document.getElementById("profileInitial").textContent =
+                name.charAt(0).toUpperCase();
+        }
+
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+
+            const button = document.getElementById("logoutBtn");
+            const message = document.getElementById("message");
+
+            button.disabled = true;
+            button.textContent = "Logging out...";
+
+            const { error } = await supabaseClient.auth.signOut();
+
+            if (error) {
+                message.textContent = error.message;
+                button.disabled = false;
+                button.textContent = "Logout";
+                return;
+            }
+
+            window.location.href = "login.html";
+        });
+
+        loadAccount();
+    </script>
+
+</body>
+</html>

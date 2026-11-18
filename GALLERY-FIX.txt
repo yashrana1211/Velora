@@ -1,0 +1,2 @@
+Product gallery consistency fix:
+Each product detail gallery now uses three crops of that same product photograph. No thumbnails switch to a different product. The tighter crops are framing variations, not separate real-world product angles.

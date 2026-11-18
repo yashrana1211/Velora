@@ -1,0 +1,5 @@
+VELORA Photography Upgrade
+
+This package updates the local photography across the homepage, Men, Women, New Arrivals, About, and product detail galleries. Existing page structure, styling, pricing, cart, wishlist, filters, sorting, and JavaScript have been preserved.
+
+Open this VELORA folder in VS Code and run index.html with Live Server. Keep the images folder in place because all updated photographs are now stored locally.

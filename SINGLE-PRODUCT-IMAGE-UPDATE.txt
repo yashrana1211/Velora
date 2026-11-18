@@ -1,0 +1,3 @@
+VELORA PRODUCT IMAGE UPDATE
+
+Each of the 8 products now uses one high-resolution primary photograph only. Product detail pages no longer show alternate thumbnails or switchable gallery views. The 8 primary product photographs were upscaled to 1800 x 1800 pixels with high-quality resampling and mild sharpening. All other website pages and shopping functionality are retained.

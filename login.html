@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en"> <head>     <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>Login | VELORA</title>
+
+
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        background: #F8F7F4;
+        color: #171717;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .login-wrapper {
+        min-height: 85vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 60px 20px;
+    }
+
+    .login-box {
+        width: 100%;
+        max-width: 460px;
+        background: #fff;
+        padding: 45px;
+        box-sizing: border-box;
+        border: 1px solid #e8e3dc;
+    }
+
+    .login-logo {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 38px;
+        letter-spacing: 3px;
+        margin-bottom: 12px;
+    }
+
+    .login-subtitle {
+        text-align: center;
+        color: #777;
+        font-size: 13px;
+        letter-spacing: 2px;
+        margin-bottom: 35px;
+        text-transform: uppercase;
+    }
+
+    .login-box h1 {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 32px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    .login-description {
+        text-align: center;
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .login-box label {
+        display: block;
+        font-size: 13px;
+        margin: 18px 0 8px;
+    }
+
+    .login-box input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px;
+        border: 1px solid #ddd6cd;
+        background: #F8F7F4;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .login-box input:focus {
+        border-color: #B49A7A;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 16px;
+        margin-top: 25px;
+        background: #171717;
+        color: white;
+        border: none;
+        letter-spacing: 2px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .login-button:hover {
+        background: #B49A7A;
+    }
+
+    .login-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .login-message {
+        display: none;
+        padding: 12px;
+        margin-top: 18px;
+        font-size: 13px;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .login-footer {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 13px;
+        color: #777;
+    }
+
+    .login-footer a {
+        color: #171717;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .back-home {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        color: #777;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
+    @media(max-width: 500px) {
+        .login-box {
+            padding: 30px 22px;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+<div class="login-wrapper">
+    <div class="login-box">
+
+        <div class="login-logo">VELORA.</div>
+
+        <div class="login-subtitle">
+            Define Your Style. Own Your Identity.
+        </div>
+
+        <h1>Welcome Back</h1>
+
+        <p class="login-description">
+            Sign in to continue your VELORA experience.
+        </p>
+
+        <form id="login-form">
+
+            <label for="email">Email Address</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit" class="login-button" id="login-button">
+                SIGN IN
+            </button>
+
+            <div id="login-message" class="login-message"></div>
+
+        </form>
+
+        <div class="login-footer">
+            Don't have an account?
+            <a href="signup.html">Create Account</a>
+        </div>
+
+        <a href="index.html" class="back-home">
+            ← BACK TO HOME
+        </a>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+
+<script>
+    const loginForm = document.getElementById("login-form");
+    const loginMessage = document.getElementById("login-message");
+    const loginButton = document.getElementById("login-button");
+
+    function showMessage(message, success) {
+        loginMessage.style.display = "block";
+        loginMessage.textContent = message;
+        loginMessage.style.background = success ? "#e7f4e8" : "#fbe9e7";
+        loginMessage.style.color = success ? "#236b32" : "#a12b20";
+    }
+
+    loginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        loginButton.disabled = true;
+        loginButton.textContent = "SIGNING IN...";
+
+        try {
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) throw error;
+
+            showMessage("Login successful! Welcome to VELORA.", true);
+
+            setTimeout(function() {
+                window.location.href = "index.html";
+            }, 1200);
+
+        } catch (error) {
+            showMessage(error.message || "Login failed. Please try again.", false);
+        } finally {
+            loginButton.disabled = false;
+            loginButton.textContent = "SIGN IN";
+        }
+    });
+</script>
+
+
+</body>
+</html>

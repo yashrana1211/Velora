@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>Checkout | VELORA</title>
+
+
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+
+    <style>
+
+
+
+        /* ==============================
+
+           ORDER SUCCESS POPUP
+
+        ============================== */
+
+
+
+        .success-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.65);
+
+            backdrop-filter: blur(6px);
+
+            z-index: 99999;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+        }
+
+
+
+        .success-overlay.active {
+
+            display: flex;
+
+            animation: fadeIn 0.35s ease;
+
+        }
+
+
+
+        .success-modal {
+
+            background: #FFFFFF;
+
+            width: 100%;
+
+            max-width: 480px;
+
+            padding: 45px 35px;
+
+            text-align: center;
+
+            animation: modalAppear 0.45s ease;
+
+        }
+
+
+
+        .success-icon {
+
+            width: 75px;
+
+            height: 75px;
+
+            background: #EDE8E0;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: 0 auto 25px;
+
+            color: #B49A7A;
+
+            font-size: 35px;
+
+            animation: successPop 0.5s ease;
+
+        }
+
+
+
+        .success-label {
+
+            color: #B49A7A;
+
+            letter-spacing: 3px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            margin-bottom: 12px;
+
+        }
+
+
+
+        .success-modal h2 {
+
+            font-family: 'Playfair Display', serif;
+
+            font-size: 32px;
+
+            font-weight: 500;
+
+            color: #171717;
+
+            margin-bottom: 12px;
+
+        }
+
+
+
+        .success-description {
+
+            color: #777777;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+
+        }
+
+
+
+        .success-details {
+
+            background: #F8F7F4;
+
+            padding: 20px;
+
+            text-align: left;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        .success-detail-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 10px 0;
+
+            font-size: 13px;
+
+            border-bottom: 1px solid #E5DFD6;
+
+        }
+
+
+
+        .success-detail-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+
+        .success-detail-row span:first-child {
+
+            color: #777777;
+
+        }
+
+
+
+        .success-detail-row span:last-child {
+
+            color: #171717;
+
+            font-weight: 500;
+
+            text-align: right;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+
+        .success-button {
+
+            width: 100%;
+
+            padding: 17px;
+
+            background: #B49A7A;
+
+            color: #FFFFFF;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            letter-spacing: 2px;
+
+            transition: 0.3s;
+
+        }
+
+
+
+        .success-button:hover {
+
+            background: #171717;
+
+        }
+
+
+
+        .success-note {
+
+            font-size: 11px;
+
+            color: #999999;
+
+            margin-top: 18px;
+
+        }
+
+
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+            }
+
+
+
+            to {
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+
+        @keyframes modalAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(25px) scale(0.96);
+
+            }
+
+
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0) scale(1);
+
+            }
+
+        }
+
+
+
+        @keyframes successPop {
+
+            from {
+
+                transform: scale(0);
+
+            }
+
+
+
+            to {
+
+                transform: scale(1);
+
+            }
+
+        }
+
+
+
+        @media(max-width: 500px) {
+
+            .success-modal {
+
+                padding: 35px 22px;
+
+            }
+
+
+
+            .success-modal h2 {
+
+                font-size: 27px;
+
+            }
+
+        }
+
+
+
+    </style>
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+    <!-- ANNOUNCEMENT BAR -->
+
+
+
+    <div class="announcement-bar">
+
+        FREE SHIPPING ON ORDERS ABOVE ₹1999
+
+    </div>
+
+
+
+
+
+    <!-- NAVIGATION -->
+
+
+
+    <nav class="navbar">
+
+
+
+        <div class="logo">
+
+            <a href="index.html">VELORA</a>
+
+        </div>
+
+
+
+        <div class="nav-links">
+
+            <a href="index.html">Home</a>
+
+            <a href="men.html">Men</a>
+
+            <a href="women.html">Women</a>
+
+            <a href="new-arrivals.html">New Arrivals</a>
+
+            <a href="about.html">About</a>
+
+            <a href="contact.html">Contact</a>
+
+            <a href="wishlist.html">♡ Wishlist</a>
+
+        </div>
+
+
+
+        <div class="nav-icons">
+
+            <a href="wishlist.html">♡ Wishlist</a>
+
+            <a href="cart.html" aria-label="Shopping cart">Bag (0)</a>
+
+        </div>
+
+
+
+    </nav>
+
+
+
+
+
+    <!-- CHECKOUT SECTION -->
+
+
+
+    <section class="checkout-page">
+
+
+
+        <div class="checkout-heading">
+
+
+
+            <p>ALMOST YOURS</p>
+
+
+
+            <h1>Secure <span>Checkout</span></h1>
+
+
+
+            <p>Complete your details to place your order.</p>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="checkout-layout">
+
+
+
+
+
+            <!-- CHECKOUT FORM -->
+
+
+
+            <div class="checkout-form">
+
+
+
+                <h2>01. Contact Information</h2>
+
+
+
+                <!--
+
+                    IMPORTANT:
+
+                    onsubmit prevents the browser reload.
+
+                    It does not stop other JavaScript handlers.
+
+                -->
+
+
+
+                <form id="checkout-form"
+
+                      onsubmit="event.preventDefault();">
+
+
+
+                    <input
+
+                        type="text"
+
+                        id="customer-name"
+
+                        placeholder="Full Name"
+
+                        required
+
+                    >
+
+
+
+                    <input
+
+                        type="email"
+
+                        id="customer-email"
+
+                        placeholder="Email Address"
+
+                        required
+
+                    >
+
+
+
+                    <input
+
+                        type="tel"
+
+                        id="customer-phone"
+
+                        placeholder="Phone Number"
+
+                        pattern="[0-9]{10}"
+
+                        maxlength="10"
+
+                        required
+
+                    >
+
+
+
+
+
+                    <h2>02. Delivery Address</h2>
+
+
+
+                    <input
+
+                        type="text"
+
+                        id="customer-address"
+
+                        placeholder="House No., Street, Area"
+
+                        required
+
+                    >
+
+
+
+                    <div class="checkout-row">
+
+
+
+                        <input
+
+                            type="text"
+
+                            id="customer-city"
+
+                            placeholder="City"
+
+                            required
+
+                        >
+
+
+
+                        <input
+
+                            type="text"
+
+                            id="customer-state"
+
+                            placeholder="State"
+
+                            required
+
+                        >
+
+
+
+                    </div>
+
+
+
+                    <input
+
+                        type="text"
+
+                        id="customer-pincode"
+
+                        placeholder="PIN Code"
+
+                        pattern="[0-9]{6}"
+
+                        maxlength="6"
+
+                        required
+
+                    >
+
+
+
+
+
+                    <h2>03. Payment Method</h2>
+
+
+
+                    <label class="payment-option">
+
+
+
+                        <input
+
+                            type="radio"
+
+                            name="payment"
+
+                            value="Cash on Delivery"
+
+                            checked
+
+                        >
+
+
+
+                        Cash on Delivery
+
+
+
+                    </label>
+
+
+
+
+
+                    <label class="payment-option">
+
+
+
+                        <input
+
+                            type="radio"
+
+                            name="payment"
+
+                            value="Online Payment"
+
+                        >
+
+
+
+                        Online Payment (Razorpay)
+
+
+
+                    </label>
+
+
+
+
+
+                    <button
+
+                        type="submit"
+
+                        class="place-order-btn"
+
+                        id="place-order-button"
+
+                    >
+
+                        PLACE ORDER
+
+                    </button>
+
+
+
+                </form>
+
+
+
+            </div>
+
+
+
+
+
+            <!-- ORDER SUMMARY -->
+
+
+
+            <div class="checkout-summary">
+
+
+
+                <h2>Your Order</h2>
+
+
+
+                <div id="checkout-items"></div>
+
+
+
+                <div class="summary-line">
+
+
+
+                    <span>Subtotal</span>
+
+
+
+                    <span id="checkout-subtotal">₹0</span>
+
+
+
+                </div>
+
+
+
+                <div class="summary-line">
+
+
+
+                    <span>Delivery</span>
+
+
+
+                    <span id="checkout-delivery">₹0</span>
+
+
+
+                </div>
+
+
+
+                <div class="summary-total">
+
+
+
+                    <span>Total</span>
+
+
+
+                    <span id="checkout-total">₹0</span>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+    <!-- SUCCESS POPUP -->
+
+
+
+    <div class="success-overlay" id="success-overlay">
+
+
+
+        <div
+
+            class="success-modal"
+
+            role="dialog"
+
+            aria-modal="true"
+
+            aria-labelledby="success-title"
+
+        >
+
+
+
+            <div class="success-icon">
+
+                ✓
+
+            </div>
+
+
+
+            <p class="success-label">
+
+                VELORA • ORDER CONFIRMED
+
+            </p>
+
+
+
+            <h2 id="success-title">
+
+                Thank You!
+
+            </h2>
+
+
+
+            <p class="success-description">
+
+                Your order has been placed successfully.
+
+                Thank you for choosing VELORA.
+
+            </p>
+
+
+
+
+
+            <div class="success-details">
+
+
+
+                <div class="success-detail-row">
+
+
+
+                    <span>Order ID</span>
+
+
+
+                    <span id="success-order-id">-</span>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="success-detail-row">
+
+
+
+                    <span>Payment Method</span>
+
+
+
+                    <span id="success-payment">-</span>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="success-detail-row">
+
+
+
+                    <span>Order Status</span>
+
+
+
+                    <span>Confirmed</span>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                class="success-button"
+
+                id="continue-shopping"
+
+                type="button"
+
+            >
+
+                CONTINUE SHOPPING
+
+            </button>
+
+
+
+
+
+            <p class="success-note">
+
+                DEFINE YOUR STYLE. OWN YOUR IDENTITY.
+
+            </p>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <!-- FOOTER -->
+
+
+
+    <footer class="velora-footer">
+
+
+
+        <div class="footer-main">
+
+
+
+            <div class="footer-brand">
+
+
+
+                <h2>VELORA</h2>
+
+
+
+                <p>
+
+                    Define Your Style.<br>
+
+                    Own Your Identity.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="footer-column">
+
+
+
+                <h3>EXPLORE</h3>
+
+
+
+                <a href="index.html">Home</a>
+
+                <a href="men.html">Men</a>
+
+                <a href="women.html">Women</a>
+
+                <a href="new-arrivals.html">New Arrivals</a>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="footer-column">
+
+
+
+                <h3>ABOUT VELORA</h3>
+
+
+
+                <a href="about.html">Our Story</a>
+
+                <a href="contact.html">Contact Us</a>
+
+                <a href="wishlist.html">My Wishlist</a>
+
+                <a href="cart.html">Shopping Bag</a>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="footer-column">
+
+
+
+                <h3>CUSTOMER CARE</h3>
+
+
+
+                <a href="contact.html">Help & Support</a>
+
+                <a href="contact.html">Order Enquiries</a>
+
+                <a href="#">Shipping Information</a>
+
+                <a href="#">FAQs</a>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="footer-bottom">
+
+
+
+            <p>© 2026 VELORA. ALL RIGHTS RESERVED.</p>
+
+
+
+            <p>CRAFTED WITH STYLE.</p>
+
+
+
+        </div>
+
+
+
+    </footer>
+
+
+
+
+
+    <!-- POPUP JAVASCRIPT -->
+
+
+
+    <script>
+
+
+
+        // Preserve the original browser alert.
+
+
+
+        const originalAlert = window.alert.bind(window);
+
+
+
+
+
+        // Replace the order confirmation alert.
+
+
+
+        window.alert = function(message) {
+
+
+
+            const text = String(message);
+
+
+
+            if (
+
+                text.includes("Thank you for shopping with VELORA") &&
+
+                text.includes("order ID")
+
+            ) {
+
+
+
+                const orderMatch = text.match(/order ID:\s*(.+)/i);
+
+
+
+                const paymentMatch = text.match(/Payment:\s*(.+)/i);
+
+
+
+
+
+                document.getElementById("success-order-id").textContent =
+
+                    orderMatch
+
+                    ? orderMatch[1].split("\n")[0].trim()
+
+                    : "Confirmed";
+
+
+
+
+
+                document.getElementById("success-payment").textContent =
+
+                    paymentMatch
+
+                    ? paymentMatch[1].split("\n")[0].trim()
+
+                    : "Cash on Delivery";
+
+
+
+
+
+                document.getElementById("success-overlay")
+
+                    .classList.add("active");
+
+
+
+            } else {
+
+
+
+                originalAlert(message);
+
+
+
+            }
+
+
+
+        };
+
+
+
+
+
+        // Continue shopping button.
+
+
+
+        document.getElementById("continue-shopping")
+
+            .addEventListener("click", function() {
+
+
+
+                window.location.href = "index.html";
+
+
+
+            });
+
+
+
+
+
+        // Close popup using Escape key.
+
+
+
+        document.addEventListener("keydown", function(event) {
+
+
+
+            if (event.key === "Escape") {
+
+
+
+                const popup = document.getElementById("success-overlay");
+
+
+
+                if (popup.classList.contains("active")) {
+
+
+
+                    popup.classList.remove("active");
+
+
+
+                }
+
+
+
+            }
+
+
+
+        });
+
+
+
+    </script>
+    <!-- SUPABASE JAVASCRIPT LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- RAZORPAY CHECKOUT LIBRARY -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- VELORA SUPABASE CONFIGURATION -->
+<script src="js/supabase-config.js"></script>
+
+<!-- MAIN WEBSITE JAVASCRIPT -->
+<script src="js/script.js"></script>
+
+
+
+</body>
+
+
+
+</html>

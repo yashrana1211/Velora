@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | VELORA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F8F7F4;
+            color: #171717;
+            font-family: 'Inter', sans-serif;
+        }
+
+        header {
+            background: white;
+            padding: 22px 8%;
+            border-bottom: 1px solid #EDE8E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            letter-spacing: 4px;
+        }
+
+        header a {
+            color: #171717;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 65px auto;
+            padding: 0 20px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .heading h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 43px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .heading p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        #orders-container {
+            display: grid;
+            gap: 25px;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #EDE8E0;
+            padding: 30px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #EDE8E0;
+        }
+
+        .order-number {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .order-date {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .status {
+            padding: 9px 15px;
+            background: #EDE8E0;
+            color: #806747;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .order-products {
+            padding: 20px 0;
+        }
+
+        .product-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px 0;
+            font-size: 13px;
+        }
+
+        .product-details {
+            color: #777;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .order-footer {
+            border-top: 1px solid #EDE8E0;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .payment {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+            border: 1px solid #EDE8E0;
+        }
+
+        .empty-state h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            background: #171717;
+            color: white;
+            text-decoration: none;
+            padding: 14px 25px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        #message {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 12px;
+            border-top: 1px solid #EDE8E0;
+            margin-top: 80px;
+        }
+
+        @media (max-width: 600px) {
+            .heading h1 {
+                font-size: 34px;
+            }
+
+            .order-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">VELORA</div>
+    <a href="account.html">← My Account</a>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <h1>My Orders</h1>
+        <p>Track your purchases and revisit your VELORA orders.</p>
+    </section>
+
+    <div id="message">Loading your orders...</div>
+
+    <section id="orders-container"></section>
+
+</main>
+
+<footer>
+    © 2026 VELORA. Define Your Style. Own Your Identity.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+
+<script>
+    const ordersContainer = document.getElementById("orders-container");
+    const message = document.getElementById("message");
+
+    async function loadOrders() {
+
+        try {
+
+            // Check logged-in customer
+            const { data: { user }, error: authError } =
+                await supabaseClient.auth.getUser();
+
+            if (authError || !user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Fetch customer's orders
+            const { data: orders, error } = await supabaseClient
+                .from("orders")
+                .select("*")
+                .eq("user_id", user.id)
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                throw error;
+            }
+
+            message.style.display = "none";
+
+            if (!orders || orders.length === 0) {
+
+                ordersContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No Orders Yet</h2>
+                        <p>Your VELORA shopping journey starts here.</p>
+                        <a href="index.html" class="shop-btn">
+                            START SHOPPING
+                        </a>
+                    </div>
+                `;
+
+                return;
+            }
+
+            orders.forEach(order => {
+
+                const card = document.createElement("article");
+                card.className = "order-card";
+
+                const header = document.createElement("div");
+                header.className = "order-header";
+
+                const orderInfo = document.createElement("div");
+
+                const orderNumber = document.createElement("p");
+                orderNumber.className = "order-number";
+                orderNumber.textContent = "Order #" + order.order_number;
+
+                const orderDate = document.createElement("p");
+                orderDate.className = "order-date";
+                orderDate.textContent = new Date(
+                    order.created_at
+                ).toLocaleString("en-IN");
+
+                orderInfo.append(orderNumber, orderDate);
+
+                const status = document.createElement("span");
+                status.className = "status";
+                status.textContent = order.status;
+
+                header.append(orderInfo, status);
+
+                const products = document.createElement("div");
+                products.className = "order-products";
+
+                (Array.isArray(order.items) ? order.items : []).forEach(item => {
+
+                    const row = document.createElement("div");
+                    row.className = "product-row";
+
+                    const details = document.createElement("div");
+
+                    const name = document.createElement("strong");
+                    name.textContent = item.name;
+
+                    const description = document.createElement("p");
+                    description.className = "product-details";
+                    description.textContent =
+                        "Size: " + (item.size || "Standard") +
+                        " | Quantity: " + item.quantity;
+
+                    details.append(name, description);
+
+                    const price = document.createElement("strong");
+                    price.textContent =
+                        "₹" + (
+                            Number(item.price) * Number(item.quantity)
+                        ).toLocaleString("en-IN");
+
+                    row.append(details, price);
+                    products.appendChild(row);
+
+                });
+
+                const footer = document.createElement("div");
+                footer.className = "order-footer";
+
+                const payment = document.createElement("p");
+                payment.className = "payment";
+                payment.textContent =
+                    "Payment: " + (order.payment_method || "Not specified");
+
+                const total = document.createElement("p");
+                total.className = "total";
+                total.textContent =
+                    "Total: ₹" + Number(order.total).toLocaleString("en-IN");
+
+                footer.append(payment, total);
+
+                card.append(header, products, footer);
+                ordersContainer.appendChild(card);
+
+            });
+
+        } catch (error) {
+
+            console.error("VELORA Orders Error:", error);
+
+            message.textContent =
+                "Unable to load orders: " + error.message;
+
+        }
+
+    }
+
+    loadOrders();
+</script>
+
+</body>
+</html>

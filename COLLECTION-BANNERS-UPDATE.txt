@@ -1,0 +1,6 @@
+VELORA COLLECTION BANNER UPDATE
+
+- men.html uses images/banners/velora-men-collection.jpg through css/style.css
+- women.html uses images/banners/velora-women-collection.jpg through css/style.css
+- Existing campaign text is part of the banner artwork, so the duplicate HTML text is hidden only inside these two collection hero sections.
+- Other pages, product photos, cart, wishlist, filters, sorting and scripts are unchanged.
